@@ -10,21 +10,26 @@ import UIKit
 
 protocol GetZoneDelegate {
     func selectedZonefromTF(zone: String, forType: Int)
+    
 }
+
+protocol GetPriceDelegate {
+    func priceForAdditional(price: Int, forTag: Int)
+}
+
 
 class CustomSearchTF: UITextField {
 
     var resultList: [String] = []
-    
     var searchTableView: UITableView?
-    
     var getZoneDelegate: GetZoneDelegate?
+    var getPriceDelegate: GetPriceDelegate?
+    
     
     override func willMove(toWindow newWindow: UIWindow?) {
         super.willMove(toWindow: newWindow)
         searchTableView?.removeFromSuperview()
     }
-
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
         self.addTarget(self, action: #selector(CustomSearchTF.textFieldDidChange), for: .editingChanged)
@@ -39,34 +44,40 @@ class CustomSearchTF: UITextField {
     }
     
     @objc open func textFieldDidChange(){
-        print("Text changed ...")
-        filter()
+        switch self.tag {
+        case 0, 1:
+            filter(with: zoneChart)
+        case 2, 3, 4, 5, 6:
+            filter(with: additionalCharges)
+        default:
+            return
+        }
+        
         updateSearchTableView()
         searchTableView?.isHidden = false
     }
-    
     @objc open func textFieldDidBeginEditing() {
         print("Begin Editing")
     }
-    
     @objc open func textFieldDidEndEditing() {
         print("End editing")
 
     }
-    
     @objc open func textFieldDidEndEditingOnExit() {
         print("End on Exit")
     }
     
     
-    func filter() {
+    private func filter(with group: Dictionary<String, Any>) {
         let predicate = NSPredicate(format: "SELF contains[c] %@", self.text!)
-        let searchData = zoneChart.keys.filter { predicate.evaluate(with: $0)}
+        let searchData = group.keys.filter { predicate.evaluate(with: $0)}
         resultList = searchData
         searchTableView?.reloadData()
     }
     
 }
+
+
 
 
 extension CustomSearchTF: UITableViewDelegate, UITableViewDataSource {
@@ -109,7 +120,7 @@ extension CustomSearchTF: UITableViewDelegate, UITableViewDataSource {
             tableView.separatorInset = UIEdgeInsets.zero
             tableView.layer.cornerRadius = 5.0
             tableView.separatorColor = UIColor.lightGray
-            tableView.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+            tableView.backgroundColor = UIColor.white.withAlphaComponent(0.7)
             
             if self.isFirstResponder {
                 superview?.bringSubviewToFront(self)
@@ -137,8 +148,16 @@ extension CustomSearchTF: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.text = resultList[indexPath.row]
-        let zn = zoneChart[resultList[indexPath.row]]!
-        self.getZoneDelegate?.selectedZonefromTF(zone: zn, forType: self.tag)
+        switch self.tag {
+        case 0, 1:
+            let zn = zoneChart[resultList[indexPath.row]]!
+            self.getZoneDelegate?.selectedZonefromTF(zone: zn, forType: self.tag)
+        case 2, 3, 4, 5, 6:
+            let price = additionalCharges[resultList[indexPath.row]]!
+            self.getPriceDelegate?.priceForAdditional(price: price, forTag: self.tag)
+        default:
+            return
+        }
         
         tableView.isHidden = true
         self.endEditing(true)

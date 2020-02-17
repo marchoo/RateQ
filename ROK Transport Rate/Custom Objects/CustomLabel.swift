@@ -23,7 +23,7 @@ class CustomLabel: UILabel {
     func commonInit() {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.darkGray.cgColor
-        self.backgroundColor = UIColor.clear
+        self.backgroundColor = UIColor.white
         
     }
     
