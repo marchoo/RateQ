@@ -83,7 +83,7 @@ let zoneChart : Dictionary = [
     "EAST DUNDEE": "C",             "Mundelein": "C",           "Wheeling": "B",
     "ELGIN": "C",                   "Naperville": "C",          "Willow Springs": "C",
     "ELK GROVE VILLAGE": "A",       "New Lenox": "D",           "Willowbrook": "B",
-    "ELMHURST": "A",                "Niles": "A",               "Wilmette": "C",
+    "ELMHURST": "A",                "Niles": "B",               "Wilmette": "C",
     "ELMWOOD PARK": "A",            "Norridge": "A",            "Wilmington": "E",
     "EVANSTON": "C",                "North Aurora": "D",        "Winfield": "B",
     "EVERGREEN PARK": "C",          "North Chicago": "C",       "Winnetka": "B",

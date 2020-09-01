@@ -30,6 +30,7 @@ class CustomSearchTF: UITextField {
         super.willMove(toWindow: newWindow)
         searchTableView?.removeFromSuperview()
     }
+    
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
         self.addTarget(self, action: #selector(CustomSearchTF.textFieldDidChange), for: .editingChanged)

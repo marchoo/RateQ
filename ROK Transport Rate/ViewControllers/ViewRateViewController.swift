@@ -481,7 +481,12 @@ class ViewRateViewController: UIViewController {
         guard let rt = rate else { return 0 }
         guard let fl = fuel else { return 0 }
         guard let tl = toll else { return 0 }
-        let total = rt + fl + tl
+        
+        let rate = (rt*100).rounded()/100
+        let fuel = (fl*100).rounded()/100
+        
+        
+        let total = rate + fuel + tl
         
         return total
     }
@@ -512,6 +517,7 @@ class ViewRateViewController: UIViewController {
         
         if let imageData = img.pngData() {
             composer.addAttachmentData(imageData, mimeType: "image/png", fileName: "ROK_Quote.png")
+        
         }
         
         present(composer, animated: true, completion: nil)
